@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Informações dos Alunos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #c00;
+      padding: 10px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header img {
+      height: 30px;
+    }
+    header .profile {
+      margin-right: 20px;
+    }
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .card {
+      background-color: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      text-align: center;
+    }
+    select, input[type="text"], button {
+      margin: 10px 0;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: center;
+      background-color: #f2edf7;
+    }
+    th {
+      background-color: #bbb;
+    }
+    .resultado {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <img src="img/3linhas.png" alt="mais">
+    </div>
+    <div class="profile">
+      👤 Prof Nome
+    </div>
+  </header>
+
+  <main>
+
+    <div class="card">
+      <h2>Registrar informações dos alunos</h2>
+      <select id="alunoSelect">
+        <option value="">Selecione o nome do aluno</option>
+        <option value="Aluno 1">Aluno 1</option>
+        <option value="Aluno 2">Aluno 2</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <table>
+        <tr>
+          <th>Bimestre</th>
+          <th>Nota</th>
+          <th>Frequência</th>
+        </tr>
+        <tr>
+          <td>
+            <select>
+              <option>Selecione o Bimestre</option>
+              <option>1º Bimestre</option>
+              <option>2º Bimestre</option>
+              <option>3º Bimestre</option>
+              <option>4º Bimestre</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Nota" class="nota"></td>
+          <td><input type="text" placeholder="Frequência" class="frequencia"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="text" placeholder="Nota" class="nota"></td>
+          <td><input type="text" placeholder="Frequência" class="frequencia"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="text" placeholder="Nota" class="nota"></td>
+          <td><input type="text" placeholder="Frequência" class="frequencia"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="text" placeholder="Nota" class="nota"></td>
+          <td><input type="text" placeholder="Frequência" class="frequencia"></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Calcular média do aluno</h3>
+      <button id="calcularBtn">Calcular</button>
+    </div>
+
+    
+    <div class="card" id="resultado" style="display:none;">
+      <h3>Resultado</h3>
+      <table>
+        <tr>
+          <th>Aluno</th>
+          <th>Média de Notas</th>
+          <th>Média de Frequência</th>
+          <th>Situação</th>
+        </tr>
+        <tr id="resultadoAluno">
+          <td id="resultadoNome">Aluno</td>
+          <td id="resultadoNotas">-</td>
+          <td id="resultadoFrequencia">-</td>
+          <td id="resultadoSituacao">-</td>
+        </tr>
+      </table>
+    </div>
+
+  </main>
+
+  <script>
+    document.getElementById("calcularBtn").addEventListener("click", function() {
+      const alunoSelect = document.getElementById("alunoSelect");
+      const nomeAluno = alunoSelect.value;
+      
+      if (!nomeAluno) {
+        alert("Por favor, selecione um aluno.");
+        return;
+      }
+
+      const notasInputs = document.querySelectorAll(".nota");
+      const frequenciasInputs = document.querySelectorAll(".frequencia");
+      
+      let notas = [];
+      let frequencias = [];
+
+      notasInputs.forEach(input => {
+        const nota = parseFloat(input.value);
+        if (!isNaN(nota)) {
+          notas.push(nota);
+        }
+      });
+
+      frequenciasInputs.forEach(input => {
+        const frequencia = parseFloat(input.value);
+        if (!isNaN(frequencia)) {
+          frequencias.push(frequencia);
+        }
+      });
+
+      if (notas.length > 0 && frequencias.length > 0) {
+        const mediaNotas = notas.reduce((acc, curr) => acc + curr, 0) / notas.length;
+        const mediaFrequencia = frequencias.reduce((acc, curr) => acc + curr, 0) / frequencias.length;
+
+        const situacao = mediaNotas > 59.99 && mediaFrequencia > 2.99 ? "Aprovado" : "Reprovado";
+
+        document.getElementById("resultado").style.display = "block";
+        document.getElementById("resultadoNome").textContent = nomeAluno;
+        document.getElementById("resultadoNotas").textContent = mediaNotas.toFixed(2);
+        document.getElementById("resultadoFrequencia").textContent = mediaFrequencia.toFixed(2);
+        document.getElementById("resultadoSituacao").textContent = situacao;
+      } else {
+        alert("Por favor, insira notas e frequências.");
+      }
+    });
+  </script>
+
+</body>
+</html>
